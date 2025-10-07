@@ -41,7 +41,7 @@
     "@tanstack/react-start": "^1.132.25"
   },
   "dependencies": {
-    "@kinde-oss/kinde-auth-react": "5.6.6-2",
+    "@kinde-oss/kinde-auth-react": "5.7.2",
     "@kinde/js-utils": "0.25.1-4",
     "@kinde/jwt-decoder": "^0.2.0"
   }
