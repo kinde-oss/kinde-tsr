@@ -90,6 +90,8 @@ With the default configuration, this single route handles:
 - `/api/auth/create-org`
 - `/api/auth/health`
 
+For organization-scoped login via the server route, append `?org_code=org_…` to `/api/auth/login`. That value is forwarded into the Kinde authorize request (same meaning as `login({ orgCode })` from `useKindeAuth` on the client).
+
 If you change `KINDE_AUTH_API_PATH`, the file route path must match that custom path.
 
 ### 4. Use the client helpers
