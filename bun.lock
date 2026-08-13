@@ -6,7 +6,7 @@
       "name": "@kinde/tsr",
       "dependencies": {
         "@kinde-oss/kinde-auth-react": "^5.11.0",
-        "@kinde/js-utils": "^0.30.0",
+        "@kinde/js-utils": "0.32.0",
         "@kinde/jwt-decoder": "^0.2.0",
         "path-to-regexp": "^8.3.0",
       },
@@ -154,9 +154,9 @@
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
 
-    "@kinde-oss/kinde-auth-react": ["@kinde-oss/kinde-auth-react@5.11.0", "", { "dependencies": { "@kinde/js-utils": "0.29.0" }, "peerDependencies": { "react": "^17 || ^18 || >=19.2.1", "react-dom": "^17 || ^18 || >=19.2.1" } }, "sha512-9n1LfjjVTlKmbrc7PFW4QN1tAbv+6NUtH3F7ptlO31aOch/98ha9rZ8vY25WmpjcnhJvCzVX2zC/IHwej/PhGg=="],
+    "@kinde-oss/kinde-auth-react": ["@kinde-oss/kinde-auth-react@5.13.0", "", { "dependencies": { "@kinde/js-utils": "0.32.0" }, "peerDependencies": { "react": "^17 || ^18 || >=19.2.1", "react-dom": "^17 || ^18 || >=19.2.1" } }, "sha512-VTGou+6ctCm6MkinSVdBXlyciA/jXIYUJfv1S47siR4MJ7EekADuTh37WIExOyE660LOud8/cRxJzW5E4JDttg=="],
 
-    "@kinde/js-utils": ["@kinde/js-utils@0.30.0", "", { "dependencies": { "@kinde/jwt-decoder": "^0.2.0" }, "peerDependencies": { "expo-secure-store": ">=11.0.0" }, "optionalPeers": ["expo-secure-store"] }, "sha512-tEpnbAHImC2SGwVDZwqDN85ybW+RoAi6ealKTsWqDM7rIpNIun7qRHqhkzLJ4mobgJ26Do0jte6XQOavH4yLGw=="],
+    "@kinde/js-utils": ["@kinde/js-utils@0.32.0", "", { "dependencies": { "@kinde/jwt-decoder": "^0.2.0" } }, "sha512-rio1Th67SmbYieJSaBi/W+3W6Rf5edoaJ8oR921X+M40EZX0NvzYSu42WyikesPiqCgWlTMu78WbM12hzyvEnQ=="],
 
     "@kinde/jwt-decoder": ["@kinde/jwt-decoder@0.2.0", "", {}, "sha512-dqtwCmAvywOVLkkUfp4UbqdvVLsK0cvHsJhU3gDY9rgjAdZhGw0vCreBW6j3MFLxbi6cZm7pMU7/O5SJgvN5Rw=="],
 
@@ -587,8 +587,6 @@
     "@babel/template/@babel/code-frame": ["@babel/code-frame@7.29.0", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.28.5", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw=="],
 
     "@babel/traverse/@babel/code-frame": ["@babel/code-frame@7.29.0", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.28.5", "js-tokens": "^4.0.0", "picocolors": "^1.1.1" } }, "sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw=="],
-
-    "@kinde-oss/kinde-auth-react/@kinde/js-utils": ["@kinde/js-utils@0.29.0", "", { "dependencies": { "@kinde/jwt-decoder": "^0.2.0" }, "peerDependencies": { "expo-secure-store": ">=11.0.0" }, "optionalPeers": ["expo-secure-store"] }, "sha512-YtoUGxlvHKaj3wlPVGG9sSklB/sz8Re++/OlIridPICz+prMHOOGPk9CantKGrymsdxJjTSq9/0zPac+C6oqQg=="],
 
     "@tanstack/router-plugin/chokidar": ["chokidar@3.6.0", "", { "dependencies": { "anymatch": "~3.1.2", "braces": "~3.0.2", "glob-parent": "~5.1.2", "is-binary-path": "~2.1.0", "is-glob": "~4.0.1", "normalize-path": "~3.0.0", "readdirp": "~3.6.0" }, "optionalDependencies": { "fsevents": "~2.3.2" } }, "sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw=="],
 

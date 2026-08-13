@@ -42,7 +42,7 @@
   },
   "dependencies": {
     "@kinde-oss/kinde-auth-react": "^5.11.0",
-    "@kinde/js-utils": "^0.30.0",
+    "@kinde/js-utils": "0.32.0",
     "@kinde/jwt-decoder": "^0.2.0",
     "path-to-regexp": "^8.3.0"
   }
