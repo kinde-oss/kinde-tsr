@@ -12,36 +12,44 @@ export type KindeTanstackProviderProps = {
   waitForInitialLoad?: boolean;
 };
 
-// Non-method fields from KindeContextProps (via State). Listed explicitly so the
-// Proxy trap never intercepts them and returns a function instead of their real value.
-const loadingBase = {
-  isAuthenticated: false as const,
-  isLoading: true as const,
-  user: undefined,
-  error: undefined,
+const notReady = (name: string) => async () => {
+  throw new Error(
+    `useKindeAuth: "${name}" was called before auth is ready — check isLoading before calling auth methods`,
+  );
 };
-
-// Returning undefined for thenable keys prevents loadingContext from being
-// mistaken for a Promise by `await`, `Promise.resolve()`, or async utilities
-// that probe for `.then` on values.
-const THENABLE_KEYS = new Set(["then", "catch", "finally"]);
 
 // Provided whenever KindeTanstackProvider is mounted but auth is not yet resolved
 // (during SSR or client-side loading with waitForInitialLoad). Keeping this non-null
 // means KindeContext is null *only* when no provider is present at all — so
 // useKindeAuth can throw immediately without needing a typeof window check.
-const loadingContext = new Proxy(loadingBase, {
-  get(target, prop: PropertyKey) {
-    if (typeof prop === "symbol") return Reflect.get(target, prop);
-    if (THENABLE_KEYS.has(prop as string)) return undefined;
-    if (prop in target) return target[prop as keyof typeof target];
-    return async () => {
-      throw new Error(
-        `useKindeAuth: "${String(prop)}" was called before auth is ready — check isLoading before calling auth methods`
-      );
-    };
-  },
-}) as unknown as KindeContextProps;
+// Explicit stubs (not a Proxy) so the object has a real shape for `in`, spread,
+// and Object.keys. Cast is required: the reject stubs cannot match every method
+// signature on KindeContextProps.
+const loadingContext = {
+  isAuthenticated: false,
+  isLoading: true,
+  user: undefined,
+  error: undefined,
+  login: notReady("login"),
+  register: notReady("register"),
+  logout: notReady("logout"),
+  getClaims: notReady("getClaims"),
+  getIdToken: notReady("getIdToken"),
+  getToken: notReady("getToken"),
+  getAccessToken: notReady("getAccessToken"),
+  getClaim: notReady("getClaim"),
+  getOrganization: notReady("getOrganization"),
+  getCurrentOrganization: notReady("getCurrentOrganization"),
+  getFlag: notReady("getFlag"),
+  getUserProfile: notReady("getUserProfile"),
+  getPermission: notReady("getPermission"),
+  getPermissions: notReady("getPermissions"),
+  getUserOrganizations: notReady("getUserOrganizations"),
+  getRoles: notReady("getRoles"),
+  refreshToken: notReady("refreshToken"),
+  generatePortalUrl: notReady("generatePortalUrl"),
+  switchOrg: notReady("switchOrg"),
+} as unknown as KindeContextProps;
 
 // KindeContext is always non-null inside this provider (loading or not).
 // null context means the component tree is outside KindeTanstackProvider entirely.

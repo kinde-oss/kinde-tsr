@@ -42,6 +42,11 @@ describe("FallbackKindeContextProvider", () => {
   });
 
   describe("method stubs", () => {
+    it("exposes methods as own properties", () => {
+      const { result } = renderHook(useKindeContext, { wrapper: FallbackKindeContextProvider });
+      expect(result.current && "getToken" in result.current).toBe(true);
+    });
+
     it("returns a rejected Promise — not a synchronous throw", async () => {
       const { result } = renderHook(useKindeContext, { wrapper: FallbackKindeContextProvider });
       const call = result.current?.getToken();
