@@ -204,7 +204,7 @@ The SDK reads required client-facing values from `VITE_*` variables and reads se
 | Export | Description |
 | --- | --- |
 | `KindeTanstackProvider` | Wraps the Kinde React provider and syncs the server session into the client store. |
-| `useKindeAuth` | Re-exported from `@kinde-oss/kinde-auth-react`. |
+| `useKindeAuth` | Direct re-export of `useKindeAuth` from `@kinde-oss/kinde-auth-react`. SSR safety is provided by `KindeTanstackProvider` — see [SSR safety](#ssr-safety-and-usekindeauth) below. |
 | `LoginLink` | TanStack Router `Link` pointed at the configured login route. |
 | `LogoutLink` | TanStack Router `Link` pointed at the configured logout route. |
 | `RegisterLink` | TanStack Router `Link` pointed at the configured register route. |
@@ -219,6 +219,26 @@ The SDK reads required client-facing values from `VITE_*` variables and reads se
 | `kindeAuthHandler(request)` | Dispatches the catch-all auth request to the correct Kinde route handler. |
 | `protect(options?)` | Guards TanStack routes from `beforeLoad`. |
 | `@kinde/js-utils` re-exports | Token, user, org, permission, entitlement, and helper utilities from the core Kinde JS utilities package. |
+
+### SSR safety and `useKindeAuth`
+
+`useKindeAuth` is a direct re-export from `@kinde-oss/kinde-auth-react`. SSR safety is handled at the provider level: `KindeTanstackProvider` always supplies a non-null fallback context during SSR and while the initial session load is in progress, so `useKindeAuth` never sees a null context and never throws on the server.
+
+| Scenario | Behaviour |
+| --- | --- |
+| SSR or initial client load | `isLoading: true`, `isAuthenticated: false`, `user: undefined`, `error: undefined` |
+| Method called before hydration (e.g. `getToken()`) | Returns a rejected `Promise` with `"…was called before auth is ready — check isLoading"` |
+| Used outside `KindeTanstackProvider` | Throws `"Oooops! useKindeAuth must be used within a KindeProvider"` |
+
+Always guard method calls with `if (!isLoading)` or `if (isAuthenticated)` before invoking async methods:
+
+```tsx
+const { isLoading, isAuthenticated, getToken } = useKindeAuth()
+
+if (!isLoading && isAuthenticated) {
+  const token = await getToken()
+}
+```
 
 ### About the `@kinde-oss/kinde-auth-react` re-exports
 

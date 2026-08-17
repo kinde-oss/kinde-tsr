@@ -28,7 +28,8 @@
         "noUnusedParameters": false,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "strict": true
+        "strict": true,
+        "types": ["vitest/globals", "node"]
     },
     "include": [
         "src",
