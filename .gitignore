@@ -1,7 +1,9 @@
 node_modules
 dist
 .DS_Store
+temp_auto_push.bat
 coverage
 .npmrc
 playground
-.env
+.env.gitignore
+branch_structure.json
