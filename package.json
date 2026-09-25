@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "rm -rf ./dist && tsup",
+    "prepublishOnly": "npm run build && npm test",
     "format": "biome check --write --unsafe",
     "lint": "biome lint",
     "test": "vitest run",
