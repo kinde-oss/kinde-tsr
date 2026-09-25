@@ -8,6 +8,7 @@
         "@kinde-oss/kinde-auth-react": "^5.11.0",
         "@kinde/js-utils": "0.32.0",
         "@kinde/jwt-decoder": "^0.2.0",
+        "@kinde/jwt-validator": "^0.4.5",
         "path-to-regexp": "^8.3.0",
       },
       "devDependencies": {
@@ -188,6 +189,8 @@
     "@kinde/js-utils": ["@kinde/js-utils@0.32.0", "", { "dependencies": { "@kinde/jwt-decoder": "^0.2.0" } }, "sha512-rio1Th67SmbYieJSaBi/W+3W6Rf5edoaJ8oR921X+M40EZX0NvzYSu42WyikesPiqCgWlTMu78WbM12hzyvEnQ=="],
 
     "@kinde/jwt-decoder": ["@kinde/jwt-decoder@0.2.0", "", {}, "sha512-dqtwCmAvywOVLkkUfp4UbqdvVLsK0cvHsJhU3gDY9rgjAdZhGw0vCreBW6j3MFLxbi6cZm7pMU7/O5SJgvN5Rw=="],
+
+    "@kinde/jwt-validator": ["@kinde/jwt-validator@0.4.5", "", { "dependencies": { "@kinde/jwt-decoder": "^0.2.0", "jsrsasign": "^11.1.0" } }, "sha512-oXrLhl4bYUv8TPiKthh23IC6XM5j0paIeKnCpSpHyKLOIowFQhkCx1oml8BZcpEdgn0qo4sIIESReKpp/mLJIA=="],
 
     "@napi-rs/wasm-runtime": ["@napi-rs/wasm-runtime@1.1.1", "", { "dependencies": { "@emnapi/core": "^1.7.1", "@emnapi/runtime": "^1.7.1", "@tybys/wasm-util": "^0.10.1" } }, "sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A=="],
 
@@ -508,6 +511,8 @@
     "jsesc": ["jsesc@3.1.0", "", { "bin": { "jsesc": "bin/jsesc" } }, "sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA=="],
 
     "json5": ["json5@2.2.3", "", { "bin": { "json5": "lib/cli.js" } }, "sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg=="],
+
+    "jsrsasign": ["jsrsasign@11.1.5", "", {}, "sha512-i6mAjey0/4UQmlOaNS2vROl8EkWV8Ei436reJAby2OPQ3lF6uXSs1VYpnM8hndmmCMFIzNc04Uw2GF+0JVLFbg=="],
 
     "lightningcss": ["lightningcss@1.32.0", "", { "dependencies": { "detect-libc": "^2.0.3" }, "optionalDependencies": { "lightningcss-android-arm64": "1.32.0", "lightningcss-darwin-arm64": "1.32.0", "lightningcss-darwin-x64": "1.32.0", "lightningcss-freebsd-x64": "1.32.0", "lightningcss-linux-arm-gnueabihf": "1.32.0", "lightningcss-linux-arm64-gnu": "1.32.0", "lightningcss-linux-arm64-musl": "1.32.0", "lightningcss-linux-x64-gnu": "1.32.0", "lightningcss-linux-x64-musl": "1.32.0", "lightningcss-win32-arm64-msvc": "1.32.0", "lightningcss-win32-x64-msvc": "1.32.0" } }, "sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ=="],
 
