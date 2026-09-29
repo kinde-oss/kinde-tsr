@@ -9,25 +9,25 @@ const TWENTY_NINE_DAYS = 2505600;
 
 // Checks the token was signed by the issuer's keys and issued for this app. Expiry is
 // left to checkSession so an expired session can still be refreshed.
+// validateToken throws only when the JWKS can't be fetched. That is left to propagate so
+// an outage fails the request instead of reading as a missing token and ending the session.
 const isTrustedToken = async (token: string, isIdToken: boolean): Promise<boolean> => {
-  try {
-    const result = await validateToken({ token, domain: KindeConfig.env.KINDE_ISSUER_URL });
-    if (!result.valid) {
-      kindeLog.warn(`isTrustedToken: token failed verification: ${result.message}`);
-      return false;
-    }
-
-    // Safe to decode now that the signature over the payload has been verified.
-    const claims = jwtDecoder(token);
-    if (claims?.iss !== KindeConfig.env.KINDE_ISSUER_URL) {
-      return false;
-    }
-
-    return !isIdToken || [claims.aud].flat().includes(KindeConfig.env.KINDE_CLIENT_ID);
-  } catch (error) {
-    kindeLog.warn('isTrustedToken: token failed verification', error);
+  const result = await validateToken({ token, domain: KindeConfig.env.KINDE_ISSUER_URL });
+  if (!result.valid) {
+    kindeLog.warn(`isTrustedToken: token failed verification: ${result.message}`);
     return false;
   }
+
+  // Safe to decode now that the signature over the payload has been verified.
+  const claims = jwtDecoder(token);
+  if (claims?.iss !== KindeConfig.env.KINDE_ISSUER_URL) {
+    return false;
+  }
+
+  // Login sends no audience, so the access token names this app in azp rather than aud.
+  return isIdToken
+    ? [claims.aud].flat().includes(KindeConfig.env.KINDE_CLIENT_ID)
+    : claims.azp === KindeConfig.env.KINDE_CLIENT_ID;
 };
 
 export class TanstackStore<V extends string = StorageKeys> extends SessionBase<V> implements SessionManager<V> {

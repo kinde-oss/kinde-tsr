@@ -31,14 +31,12 @@ const generateKeyPair = () =>
 const kindeKeys = await generateKeyPair();
 const attackerKeys = await generateKeyPair();
 
-vi.stubGlobal(
-  'fetch',
-  vi.fn(async () =>
-    Response.json({
-      keys: [{ ...(await crypto.subtle.exportKey('jwk', kindeKeys.publicKey)), kid: 'kinde-key', use: 'sig' }],
-    }),
-  ),
-);
+const fetchJwks = async () =>
+  Response.json({
+    keys: [{ ...(await crypto.subtle.exportKey('jwk', kindeKeys.publicKey)), kid: 'kinde-key', use: 'sig' }],
+  });
+const fetchMock = vi.fn(fetchJwks);
+vi.stubGlobal('fetch', fetchMock);
 
 const encode = (value: object) => Buffer.from(JSON.stringify(value)).toString('base64url');
 
@@ -54,6 +52,7 @@ const sign = async ({ key = kindeKeys.privateKey, claims = {}, expiresAt }: Sign
   const payload = encode({
     iss: ISSUER,
     aud: [CLIENT_ID],
+    azp: CLIENT_ID,
     sub: 'kp_real_user',
     iat: now,
     exp: expiresAt ?? now + 3600,
@@ -75,6 +74,7 @@ describe('TanstackStore token verification', () => {
 
   beforeEach(() => {
     for (const key of Object.keys(cookies)) delete cookies[key];
+    fetchMock.mockImplementation(fetchJwks);
   });
 
   it('returns an access token signed by the issuer', async () => {
@@ -116,6 +116,11 @@ describe('TanstackStore token verification', () => {
     expect(await store.getSessionItem(StorageKeys.idToken)).toBeNull();
   });
 
+  it('rejects an access token issued to a different client', async () => {
+    setCookieToken(StorageKeys.accessToken, await sign({ claims: { aud: [], azp: 'other_client' } }));
+    expect(await store.getSessionItem(StorageKeys.accessToken)).toBeNull();
+  });
+
   it('returns an expired but genuine access token so checkSession can refresh it', async () => {
     const token = await sign({ expiresAt: Math.floor(Date.now() / 1000) - 60 });
     setCookieToken(StorageKeys.accessToken, token);
@@ -125,6 +130,25 @@ describe('TanstackStore token verification', () => {
   it('does not verify the opaque refresh token', async () => {
     setCookieToken(StorageKeys.refreshToken, 'opaque-refresh-token');
     expect(await store.getSessionItem(StorageKeys.refreshToken)).toBe('opaque-refresh-token');
+  });
+
+  it('verifies a genuine token from cached keys while the JWKS is unreachable', async () => {
+    const token = await sign();
+    setCookieToken(StorageKeys.accessToken, token);
+    await store.getSessionItem(StorageKeys.accessToken);
+
+    fetchMock.mockRejectedValue(new Error('network down'));
+    expect(await store.getSessionItem(StorageKeys.accessToken)).toBe(token);
+  });
+
+  it('throws instead of dropping the token when the JWKS cannot be fetched', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    fetchMock.mockRejectedValue(new Error('network down'));
+    // A key that fails verification makes the validator refetch the JWKS.
+    setCookieToken(StorageKeys.accessToken, await sign({ key: attackerKeys.privateKey }));
+
+    await expect(store.getSessionItem(StorageKeys.accessToken)).rejects.toThrow('Failed to fetch JWKS');
+    vi.mocked(console.error).mockRestore();
   });
 
   it('keeps js-utils claim helpers from reading forged tokens', async () => {
