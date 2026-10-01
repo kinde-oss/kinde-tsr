@@ -6,6 +6,7 @@ import { getServerSession } from '../session';
 
 type GetSessionResult = Promise<
   | { message: 'SESSION_TERMINATE' }
+  | { message: 'SESSION_UNAVAILABLE' }
   | {
       message: 'SESSION_VALID';
       items: {
@@ -19,6 +20,11 @@ export const getSession = createServerFn().handler(async (): GetSessionResult =>
   const session = getServerSession();
   const checkSessionResult = await checkSession();
   kindeLog.info(`getSession: checkSessionResult is: `, checkSessionResult);
+
+  if (checkSessionResult.message === 'VERIFICATION_UNAVAILABLE') {
+    kindeLog.info(`getSession: SESSION_UNAVAILABLE`);
+    return { message: 'SESSION_UNAVAILABLE' };
+  }
 
   if (checkSessionResult.message !== 'CHECK_SUCCESS') {
     kindeLog.info(`getSession: SESSION_TERMINATE`);

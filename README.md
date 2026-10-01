@@ -220,6 +220,8 @@ The SDK reads required client-facing values from `VITE_*` variables and reads se
 | `protect(options?)` | Guards TanStack routes from `beforeLoad`. |
 | `@kinde/js-utils` re-exports | Token, user, org, permission, entitlement, and helper utilities from the core Kinde JS utilities package. |
 
+Server helpers such as `getUserProfile()` and `getRoles()` only see access and ID tokens that are signed by your Kinde issuer, issued for this app and not expired. Any other token reads as signed out, including one that can't be checked because Kinde's keys are unreachable. Expired tokens are refreshed by `protect()` and by `KindeTanstackProvider`, so call `protect()` in `beforeLoad` before relying on these helpers in a route.
+
 ### SSR safety and `useKindeAuth`
 
 `useKindeAuth` is a direct re-export from `@kinde-oss/kinde-auth-react`. SSR safety is handled at the provider level: `KindeTanstackProvider` always supplies a non-null fallback context during SSR and while the initial session load is in progress, so `useKindeAuth` never sees a null context and never throws on the server.
