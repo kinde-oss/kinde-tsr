@@ -20,6 +20,7 @@
   },
   "scripts": {
     "build": "rm -rf ./dist && tsup",
+    "prepublishOnly": "npm run build && npm test",
     "format": "biome check --write --unsafe",
     "lint": "biome lint",
     "test": "vitest run",
@@ -49,6 +50,7 @@
     "@kinde-oss/kinde-auth-react": "^5.11.0",
     "@kinde/js-utils": "0.32.1",
     "@kinde/jwt-decoder": "^0.2.0",
+    "jose": "6.2.12",
     "path-to-regexp": "^8.3.0"
   }
 }

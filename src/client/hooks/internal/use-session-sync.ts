@@ -12,7 +12,7 @@ export const useSessionSync = () => {
         const session = getClientSession();
         if (data.message === 'SESSION_TERMINATE') {
           await session.destroySession();
-        } else {
+        } else if (data.message === 'SESSION_VALID') {
           await session.setItems(data.items);
         }
       })
@@ -25,6 +25,13 @@ export const useSessionSync = () => {
     kindeLog.info('refreshHandler: firing');
     const session = getClientSession();
     const getSessionResult = await getSession();
+
+    if (getSessionResult.message === 'SESSION_UNAVAILABLE') {
+      return {
+        success: false,
+        error: 'Session could not be verified, try again',
+      };
+    }
 
     if (getSessionResult.message === 'SESSION_TERMINATE') {
       await session.destroySession();
